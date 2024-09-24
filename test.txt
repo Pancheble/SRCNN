@@ -1,0 +1,27 @@
+############################################################
+
+# # 원본 HR 이미지 확인
+
+# img = cv2.imread(train_dataset.img_paths[12])
+# print(img.shape)
+# plt.imshow(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+# plt.show()
+
+############################################################
+
+# # (저해상도, 고해상도) Paired 이미지 패치 확인
+
+# fig, axes = plt.subplots(1,2, figsize = (5,5))
+# idx = random.randint(0, len(train_dataset.sub_lr_imgs))
+
+# axes[0].imshow(train_dataset.sub_lr_imgs[idx].transpose(1,2,0))
+# axes[1].imshow(train_dataset.sub_hr_imgs[idx].transpose(1,2,0))
+
+# print(idx)
+# axes[0].set_title('lr_img')
+# axes[1].set_title('hr_img')
+
+# plt.tight_layout()
+# plt.show()
+
+############################################################
