@@ -19,8 +19,8 @@ def load_and_preprocess_image(image_path, upscale_factor):
 # Function to visualize the high-res, bicubic, and SRCNN output images
 def visualize_results(lr_image, sr_image, hr_image):
     fig, axes = plt.subplots(1, 3, figsize=(12, 4))
-    images = [lr_image, sr_image, hr_image]
-    titles = ['Low-Resolution', 'Super-Resolution', 'High-Resolution']
+    images = [hr_image, lr_image, sr_image]
+    titles = ['High-Resolution', 'Low-Resolution', 'Super-Resolution']
 
     for i, ax in enumerate(axes):
         ax.imshow(np.clip(images[i], 0, 1))  # Clip values to ensure proper visualization
@@ -57,3 +57,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
+    
