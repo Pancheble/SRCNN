@@ -35,13 +35,13 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Load the saved model from the specified path
-    model_path = r"C:\Users\User\Desktop\SRCNN\result\torch_SRCNN_200EPOCHS.pth"
+    model_path = r"C:\SR\SRCNN\result\torch_SRCNN_200EPOCHS.pth"
     model = SRCNN(kernel_list=[9, 3, 5], filters_list=[128, 64, 3]).to(device)  # Replace kernel_list and filters_list if needed
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
 
     # Load and preprocess the high-resolution test image
-    test_image_path = r"C:\Users\User\Desktop\SRCNN\data\Set5\butterfly.png"  # Set the path to your test image
+    test_image_path = r"C:\SR\SRCNN\data\Set5\butterfly.png"  # Set the path to your test image
     hr_img, bicubic_img = load_and_preprocess_image(test_image_path, upscale_factor=3)
 
     # Prepare the input image for the SRCNN model

@@ -17,7 +17,7 @@ config = {
     'batch_size': 128,       # Number of samples per batch
     'epochs': 200,             # Number of training epochs
     'lr': 1e-3,              # Learning rate
-    'img_paths': r"C:\Users\User\Desktop\SRCNN\data\T91",
-    'save_path': r"C:\Users\User\Desktop\SRCNN\result\torch_SRCNN_200EPOCHS.pth",
-    'hr_img_path': r"C:\Users\User\Desktop\SRCNN\data\Set5\butterfly.png"
+    'img_paths': r"C:\SR\SRCNN\data\T91",
+    'save_path': r"C:\SR\SRCNN\result\torch_SRCNN_200EPOCHS.pth",
+    'hr_img_path': r"C:\SR\SRCNN\data\Set5\butterfly.png"
 }
