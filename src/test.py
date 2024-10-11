@@ -2,6 +2,7 @@ import torch
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
+from skimage.metrics import peak_signal_noise_ratio as psnr, structural_similarity as ssim
 from model import SRCNN
 
 # Function to load an image, preprocess it, and apply the SRCNN model
@@ -25,7 +26,6 @@ def visualize_results(lr_image, sr_image, hr_image):
     for i, ax in enumerate(axes):
         ax.imshow(np.clip(images[i], 0, 1))  # Clip values to ensure proper visualization
         ax.set_title(titles[i])
-        ax.axis('off')
     
     plt.tight_layout()
     plt.show()
@@ -35,13 +35,13 @@ def main():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Load the saved model from the specified path
-    model_path = r"C:\SR\SRCNN\result\torch_SRCNN_200EPOCHS.pth"
-    model = SRCNN(kernel_list=[9, 3, 5], filters_list=[128, 64, 3]).to(device)  # Replace kernel_list and filters_list if needed
+    model_path = r"C:\SR\SRCNN\result\torch_SRCNN_200EPOCHS_0.001747.pth"
+    model = SRCNN(kernel_list=[9, 3, 5], filters_list=[128, 64, 3]).to(device)
     model.load_state_dict(torch.load(model_path, map_location=device))
     model.eval()
 
     # Load and preprocess the high-resolution test image
-    test_image_path = r"C:\SR\SRCNN\data\Set5\butterfly.png"  # Set the path to your test image
+    test_image_path = r"C:\SR\SRCNN\data\Set14\zebra.png"  # Set the path to your test image
     hr_img, bicubic_img = load_and_preprocess_image(test_image_path, upscale_factor=3)
 
     # Prepare the input image for the SRCNN model
@@ -52,8 +52,19 @@ def main():
     with torch.no_grad():
         srcnn_img = model(input_img).squeeze().cpu().numpy().transpose(1, 2, 0)  # Convert back to (H, W, C)
 
+    # Resize SRCNN output to match the high-resolution image size
+    srcnn_img_resized = cv2.resize(srcnn_img, (hr_img.shape[1], hr_img.shape[0]), interpolation=cv2.INTER_CUBIC)
+
+    # Calculate PSNR and SSIM
+    psnr_value = psnr(hr_img, srcnn_img_resized, data_range=1)
+    ssim_value = ssim(hr_img, srcnn_img_resized, data_range=1, win_size=3, channel_axis=2)
+
+    # Display PSNR and SSIM
+    print(f"PSNR: {psnr_value:.2f}")
+    print(f"SSIM: {ssim_value:.4f}")
+
     # Visualize the results: low-res, super-res, and high-res images
-    visualize_results(bicubic_img, srcnn_img, hr_img)
+    visualize_results(bicubic_img, srcnn_img_resized, hr_img)
 
 if __name__ == '__main__':
     main()
